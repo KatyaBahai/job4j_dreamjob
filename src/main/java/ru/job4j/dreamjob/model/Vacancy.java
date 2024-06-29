@@ -8,6 +8,7 @@ import java.util.Objects;
 public class Vacancy {
     private String description;
     private int id;
+
     private String title;
     private LocalDateTime creationDate;
 
@@ -59,11 +60,11 @@ public class Vacancy {
             return false;
         }
         Vacancy vacancy = (Vacancy) o;
-        return id == vacancy.id && Objects.equals(description, vacancy.description) && Objects.equals(title, vacancy.title) && Objects.equals(creationDate, vacancy.creationDate);
+        return id == vacancy.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, id, title, creationDate);
+        return Objects.hash(id);
     }
 }
