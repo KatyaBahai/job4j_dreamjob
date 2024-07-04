@@ -8,15 +8,17 @@ import java.util.Objects;
 public class Vacancy {
     private String description;
     private int id;
-
     private String title;
-    private LocalDateTime creationDate;
+    private LocalDateTime creationDate = LocalDateTime.now();
 
     public Vacancy(int id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.creationDate = LocalDateTime.now();
+    }
+
+    public Vacancy() {
     }
 
     public int getId() {
