@@ -16,7 +16,7 @@ public class VacancyController {
     @GetMapping
     public String getAll(Model model) {
         model.addAttribute("vacancies", vacancyRepository.findAll());
-        return "vacancies/list";
+        return "/vacancies/list";
     }
 
     @GetMapping("/create")
@@ -35,10 +35,10 @@ public class VacancyController {
         var vacancyOptional = vacancyRepository.findById(id);
         if (vacancyOptional.isEmpty()) {
             model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
-            return "errors/404";
+            return "/errors/404";
         }
         model.addAttribute("vacancy", vacancyOptional.get());
-        return "vacancies/one";
+        return "/vacancies/one";
     }
 
     @PostMapping("/update")
@@ -46,7 +46,7 @@ public class VacancyController {
         var isUpdated = vacancyRepository.update(vacancy);
         if (!isUpdated) {
             model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
-            return "errors/404";
+            return "/errors/404";
         }
         return "redirect:/vacancies";
     }
@@ -56,7 +56,7 @@ public class VacancyController {
         var isDeleted = vacancyRepository.deleteById(id);
         if (!isDeleted) {
             model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
-            return "errors/404";
+            return "/errors/404";
         }
         return "redirect:/vacancies";
     }
