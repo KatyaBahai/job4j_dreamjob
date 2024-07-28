@@ -1,6 +1,8 @@
 package ru.job4j.dreamjob.service;
 
 import org.springframework.stereotype.Service;
+import net.jcip.annotations.ThreadSafe;
+
 import ru.job4j.dreamjob.model.Candidate;
 import ru.job4j.dreamjob.repository.CandidateRepository;
 
@@ -8,6 +10,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 @Service
+@ThreadSafe
 public class SimpleCandidateService implements CandidateService {
 
     private final CandidateRepository candidateRepository;
