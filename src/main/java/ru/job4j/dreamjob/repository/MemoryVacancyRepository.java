@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Repository
 @ThreadSafe
 public class MemoryVacancyRepository implements VacancyRepository {
-    private AtomicInteger nextId = new AtomicInteger(1);
+    private final AtomicInteger nextId = new AtomicInteger(1);
     private final Map<Integer, Vacancy> vacancies = new ConcurrentHashMap<>();
 
     private MemoryVacancyRepository() {
