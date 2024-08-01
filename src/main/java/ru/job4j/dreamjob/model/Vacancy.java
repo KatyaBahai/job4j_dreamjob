@@ -1,7 +1,5 @@
 package ru.job4j.dreamjob.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,11 +9,13 @@ public class Vacancy {
     private String title;
     private boolean visible;
     private LocalDateTime creationDate = LocalDateTime.now();
+    private int cityId;
 
-    public Vacancy(int id, String title, String description, boolean visible) {
+    public Vacancy(int id, String title, String description, boolean visible, int cityId) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.cityId = cityId;
         this.creationDate = LocalDateTime.now();
         this.visible = visible;
     }
@@ -78,5 +78,13 @@ public class Vacancy {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 }

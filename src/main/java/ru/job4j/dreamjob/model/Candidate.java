@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Candidate {
+    private int cityId;
     private int id;
     private String name;
     private String description;
@@ -12,11 +13,12 @@ public class Candidate {
     public Candidate() {
     }
 
-    public Candidate(int id, String name, String description) {
+    public Candidate(int id, String name, String description, int cityId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.creationDate = LocalDateTime.now();
+        this.cityId = cityId;
     }
 
     @Override
@@ -66,5 +68,13 @@ public class Candidate {
 
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 }
