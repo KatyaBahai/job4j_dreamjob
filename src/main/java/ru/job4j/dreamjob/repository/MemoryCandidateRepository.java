@@ -4,6 +4,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
@@ -17,12 +18,12 @@ public class MemoryCandidateRepository implements CandidateRepository {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private MemoryCandidateRepository() {
-        save(new Candidate(0, "Nicholas", "description to be inserted", 1, 0));
-        save(new Candidate(0, "Andrew", "description to be inserted", 1, 0));
-        save(new Candidate(0, "Peter", "description to be inserted", 1, 0));
-        save(new Candidate(0, "John", "description to be inserted", 1, 0));
-        save(new Candidate(0, "Romeo", "description to be inserted", 1, 0));
-        save(new Candidate(0, "Juliet", "description to be inserted", 1, 0));
+        save(new Candidate(0, "Nicholas", LocalDateTime.now(), "description", 1, 0));
+        save(new Candidate(0, "Andrew", LocalDateTime.now(), "description to be inserted", 1, 0));
+        save(new Candidate(0, "Peter", LocalDateTime.now(), "description to be inserted", 1, 0));
+        save(new Candidate(0, "John", LocalDateTime.now(), "description to be inserted", 1, 0));
+        save(new Candidate(0, "Romeo", LocalDateTime.now(), "description to be inserted", 1, 0));
+        save(new Candidate(0, "Juliet", LocalDateTime.now(), "description to be inserted", 1, 0));
     }
 
     @Override
@@ -40,7 +41,7 @@ public class MemoryCandidateRepository implements CandidateRepository {
     @Override
     public boolean update(Candidate candidate) {
         return candidates.computeIfPresent(candidate.getId(),
-                (id, oldCandidate) -> (new Candidate(oldCandidate.getId(), candidate.getName(), candidate.getDescription(), candidate.getCityId(), candidate.getFileId()))) != null;
+                (id, oldCandidate) -> (new Candidate(oldCandidate.getId(), candidate.getName(), oldCandidate.getCreationDate(), candidate.getDescription(), candidate.getCityId(), candidate.getFileId()))) != null;
     }
 
     @Override

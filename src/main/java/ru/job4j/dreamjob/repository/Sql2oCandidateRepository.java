@@ -6,6 +6,8 @@ import org.sql2o.Query;
 import org.sql2o.Sql2o;
 import ru.job4j.dreamjob.model.Candidate;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -27,7 +29,7 @@ public class Sql2oCandidateRepository implements CandidateRepository {
             Query query = connection.createQuery(sql, true)
                     .addParameter("name", candidate.getName())
                     .addParameter("description", candidate.getDescription())
-                    .addParameter("creationDate", candidate.getCreationDate())
+                    .addParameter("creationDate",  candidate.getCreationDate())
                     .addParameter("cityId", candidate.getCityId())
                     .addParameter("fileId", candidate.getFileId());
             int generatedId = query.executeUpdate().getKey(Integer.class);
@@ -51,15 +53,16 @@ public class Sql2oCandidateRepository implements CandidateRepository {
         try (Connection connection = sql2o.open()) {
             String sql = """
         UPDATE candidates
-        SET name = :name, description = :description, creation_date = :creationDate, 
-        city_id = :cityId, file_id = :fileId 
+        SET name = :name, description = :description, creation_date = :creationDate,
+        city_id = :cityId, file_id = :fileId
         WHERE id = :id
         """;
             Query query = connection.createQuery(sql)
                     .addParameter("name", candidate.getName())
-                    .addParameter("creation_date", candidate.getCreationDate())
-                    .addParameter("city_id", candidate.getCityId())
-                    .addParameter("file_id", candidate.getFileId())
+                    .addParameter("description", candidate.getDescription())
+                    .addParameter("creationDate", candidate.getCreationDate())
+                    .addParameter("cityId", candidate.getCityId())
+                    .addParameter("fileId", candidate.getFileId())
                     .addParameter("id", candidate.getId());
             int affectedRows = query.executeUpdate().getResult();
             return affectedRows > 0;
