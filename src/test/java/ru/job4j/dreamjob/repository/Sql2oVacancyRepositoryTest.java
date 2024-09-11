@@ -62,8 +62,7 @@ public class Sql2oVacancyRepositoryTest {
     @Test
     public void whenSaveThenGetSame() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var vacancy = new Vacancy(0, "title", "description", true, 1, file.getId());
-        vacancy.setCreationDate(creationDate);
+        var vacancy = new Vacancy(0, "title", creationDate, "description", true, 1, file.getId());
         sql2oVacancyRepository.save(vacancy);
         var savedVacancy = sql2oVacancyRepository.findById(vacancy.getId()).get();
         System.out.println(vacancy.getCreationDate());
@@ -74,12 +73,9 @@ public class Sql2oVacancyRepositoryTest {
     @Test
     public void whenSaveSeveralThenGetAll() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var vacancy1 = sql2oVacancyRepository.save(new Vacancy(0, "title1", "description1", true, 1, file.getId()));
-        vacancy1.setCreationDate(creationDate);
-        var vacancy2 = sql2oVacancyRepository.save(new Vacancy(0, "title2", "description2", false, 1, file.getId()));
-        vacancy2.setCreationDate(creationDate);
-        var vacancy3 = sql2oVacancyRepository.save(new Vacancy(0, "title3", "description3", true, 1, file.getId()));
-        vacancy3.setCreationDate(creationDate);
+        var vacancy1 = sql2oVacancyRepository.save(new Vacancy(0, "title1", creationDate, "description1", true, 1, file.getId()));
+        var vacancy2 = sql2oVacancyRepository.save(new Vacancy(0, "title2", creationDate, "description2", false, 1, file.getId()));
+        var vacancy3 = sql2oVacancyRepository.save(new Vacancy(0, "title3", creationDate, "description3", true, 1, file.getId()));
         var result = sql2oVacancyRepository.findAll();
         assertThat(result).isEqualTo(List.of(vacancy1, vacancy2, vacancy3));
     }
@@ -93,8 +89,7 @@ public class Sql2oVacancyRepositoryTest {
     @Test
     public void whenDeleteThenGetEmptyOptional() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var vacancy = sql2oVacancyRepository.save(new Vacancy(0, "title", "description", true, 1, file.getId()));
-        vacancy.setCreationDate(creationDate);
+        var vacancy = sql2oVacancyRepository.save(new Vacancy(0, "title", creationDate, "description", true, 1, file.getId()));
         var isDeleted = sql2oVacancyRepository.deleteById(vacancy.getId());
         var savedVacancy = sql2oVacancyRepository.findById(vacancy.getId());
         assertThat(isDeleted).isTrue();
@@ -109,13 +104,11 @@ public class Sql2oVacancyRepositoryTest {
     @Test
     public void whenUpdateThenGetUpdated() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var vacancy = sql2oVacancyRepository.save(new Vacancy(0, "title", "description", true, 1, file.getId()));
-        vacancy.setCreationDate(creationDate);
+        var vacancy = sql2oVacancyRepository.save(new Vacancy(0, "title", creationDate, "description", true, 1, file.getId()));
         var updatedVacancy = new Vacancy(
-                vacancy.getId(), "new title", "new description",
+                vacancy.getId(), "new title", vacancy.getCreationDate().plusDays(1).truncatedTo(ChronoUnit.MINUTES), "new description",
                 !vacancy.getVisible(), 1, file.getId()
         );
-        updatedVacancy.setCreationDate(creationDate.plusDays(1));
         var isUpdated = sql2oVacancyRepository.update(updatedVacancy);
         var savedVacancy = sql2oVacancyRepository.findById(updatedVacancy.getId()).get();
         assertThat(isUpdated).isTrue();
@@ -125,8 +118,7 @@ public class Sql2oVacancyRepositoryTest {
     @Test
     public void whenUpdateNonExistingVacancyThenGetFalse() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
-        var vacancy = new Vacancy(0, "title", "description", true, 1, file.getId());
-        vacancy.setCreationDate(creationDate);
+        var vacancy = new Vacancy(0, "title", creationDate, "description", true, 1, file.getId());
         var isUpdated = sql2oVacancyRepository.update(vacancy);
         assertThat(isUpdated).isFalse();
     }

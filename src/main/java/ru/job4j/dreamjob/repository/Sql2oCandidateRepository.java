@@ -53,14 +53,13 @@ public class Sql2oCandidateRepository implements CandidateRepository {
         try (Connection connection = sql2o.open()) {
             String sql = """
         UPDATE candidates
-        SET name = :name, description = :description, creation_date = :creationDate,
+        SET name = :name, description = :description,
         city_id = :cityId, file_id = :fileId
         WHERE id = :id
         """;
             Query query = connection.createQuery(sql)
                     .addParameter("name", candidate.getName())
                     .addParameter("description", candidate.getDescription())
-                    .addParameter("creationDate", candidate.getCreationDate())
                     .addParameter("cityId", candidate.getCityId())
                     .addParameter("fileId", candidate.getFileId())
                     .addParameter("id", candidate.getId());
