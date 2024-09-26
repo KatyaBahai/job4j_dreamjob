@@ -1,15 +1,17 @@
 package ru.job4j.dreamjob.repository;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Query;
 import org.sql2o.Sql2o;
 import ru.job4j.dreamjob.model.User;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class Sql2oUserRepository implements UserRepository {
     Sql2o sql2o;
@@ -29,10 +31,12 @@ public class Sql2oUserRepository implements UserRepository {
                     .addParameter("name", user.getName())
                     .addParameter("email", user.getEmail())
                     .addParameter("password", user.getPassword());
-          Optional<User> userOptional = findByEmail(user.getEmail());
-            if (userOptional.isEmpty()) {
+            try {
                 int serialID = query.executeUpdate().getKey(Integer.class);
                 user.setId(serialID);
+            } catch (Exception e) {
+                log.error("The email this user entered already exists");
+                return Optional.empty();
             }
             return findByEmailAndPassword(user.getEmail(), user.getPassword());
         }
