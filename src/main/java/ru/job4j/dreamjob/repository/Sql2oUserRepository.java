@@ -31,15 +31,13 @@ public class Sql2oUserRepository implements UserRepository {
                     .addParameter("name", user.getName())
                     .addParameter("email", user.getEmail())
                     .addParameter("password", user.getPassword());
-            try {
                 int serialID = query.executeUpdate().getKey(Integer.class);
                 user.setId(serialID);
-            } catch (Exception e) {
-                log.error("The email this user entered already exists");
-                return Optional.empty();
-            }
             return findByEmailAndPassword(user.getEmail(), user.getPassword());
-        }
+        } catch (Exception e) {
+        log.error("The email this user entered already exists");
+        return Optional.empty();
+    }
     }
 
     public Optional<User> findByEmail(String email) {
