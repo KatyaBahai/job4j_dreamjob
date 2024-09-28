@@ -33,21 +33,11 @@ public class Sql2oUserRepository implements UserRepository {
                     .addParameter("password", user.getPassword());
                 int serialID = query.executeUpdate().getKey(Integer.class);
                 user.setId(serialID);
-            return findByEmailAndPassword(user.getEmail(), user.getPassword());
+            return Optional.of(user);
         } catch (Exception e) {
-        log.error("The email this user entered already exists");
+        log.error(e.getMessage(), e);
         return Optional.empty();
     }
-    }
-
-    public Optional<User> findByEmail(String email) {
-        try (Connection connection = sql2o.open()) {
-            String sql = "SELECT * FROM users WHERE email = :email";
-            Query query = connection.createQuery(sql)
-                    .addParameter("email", email);
-            User user = query.setColumnMappings(User.COLUMN_MAPPING).executeAndFetchFirst(User.class);
-            return Optional.ofNullable(user);
-        }
     }
 
     @Override
