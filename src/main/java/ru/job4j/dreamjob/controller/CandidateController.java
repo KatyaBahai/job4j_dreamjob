@@ -28,15 +28,13 @@ public class CandidateController {
     }
 
     @GetMapping
-    public String getAll(Model model, HttpSession session) {
-        addUserSession(model, session);
+    public String getAll(Model model) {
         model.addAttribute("candidates", candidateService.findAll());
         return "candidates/list";
     }
 
     @GetMapping("/create")
-    public String getCreationPage(Model model, HttpSession session) {
-        addUserSession(model, session);
+    public String getCreationPage(Model model) {
         model.addAttribute("cities", cityService.findAll());
         return "candidates/create";
     }
@@ -53,8 +51,7 @@ public class CandidateController {
     }
 
     @GetMapping("/{id}")
-    public String getById(Model model, @PathVariable int id, HttpSession session) {
-        addUserSession(model, session);
+    public String getById(Model model, @PathVariable int id) {
         Optional<Candidate> candidateOptional = candidateService.findById(id);
         if (candidateOptional.isEmpty()) {
             model.addAttribute("message", "Кандидат с указанным идентификатором не найден.");
@@ -68,9 +65,7 @@ public class CandidateController {
     @PostMapping("/update")
     public String update(@ModelAttribute Candidate candidate,
                          @RequestParam MultipartFile file,
-                         Model model,
-                         HttpSession session) {
-        addUserSession(model, session);
+                         Model model) {
         try {
             var isUpdated = candidateService.update(candidate, new FileDto(file.getOriginalFilename(), file.getBytes()));
             if (!isUpdated) {
@@ -92,15 +87,6 @@ public class CandidateController {
             return "/errors/404";
         }
         return "redirect:/candidates";
-    }
-
-    private void addUserSession(Model model, HttpSession session) {
-        var user = (User) session.getAttribute("user");
-        if (user == null) {
-            user = new User();
-            user.setName("Гость");
-        }
-        model.addAttribute("user", user);
     }
 }
 
