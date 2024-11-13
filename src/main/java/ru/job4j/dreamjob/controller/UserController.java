@@ -24,11 +24,11 @@ public class UserController  {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute User user) {
-        var savedUser = userService.save(user);
+    public String register(Model model, @ModelAttribute User wowUser) {
+        var savedUser = userService.save(wowUser);
         if (savedUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
-            model.addAttribute("user", new User());
+            //  model.addAttribute("wowUser", new User());
             return "errors/404";
         }
         return "redirect:/index";
@@ -45,14 +45,14 @@ public class UserController  {
     }
 
     @PostMapping("/login")
-    public String loginUser(@ModelAttribute User user, Model model, HttpServletRequest request) {
-        var userOptional = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
+    public String loginUser(@ModelAttribute User wowUser, Model model, HttpServletRequest request) {
+        var userOptional = userService.findByEmailAndPassword(wowUser.getEmail(), wowUser.getPassword());
         if (userOptional.isEmpty()) {
             model.addAttribute("error", "Почта или пароль введены неверно");
             return "users/login";
         }
         HttpSession session = request.getSession();
-        session.setAttribute("user", userOptional.get());
+        session.setAttribute("wowUser", userOptional.get());
         return "redirect:/vacancies";
     }
 

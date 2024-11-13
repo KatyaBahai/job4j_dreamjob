@@ -24,11 +24,11 @@ public class SessionFilter extends HttpFilter {
     }
 
     private void addUserToSession(HttpSession session, HttpServletRequest request) {
-        var user = (User) session.getAttribute("user");
+        var user = (User) session.getAttribute("wowUser");
         if (user == null) {
             user = new User();
             user.setName("Гость");
         }
-        request.setAttribute("user", user);
+        request.setAttribute("wowUser", user);
     }
 }

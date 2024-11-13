@@ -21,7 +21,7 @@ public class AuthorizationFilter extends HttpFilter {
             chain.doFilter(request, response);
             return;
         }
-        var userLoggedIn = request.getSession().getAttribute("user") != null;
+        var userLoggedIn = request.getSession().getAttribute("wowUser") != null;
         if (!userLoggedIn) {
             var loginPageUrl = request.getContextPath() + "/users/login";
             response.sendRedirect(loginPageUrl);
