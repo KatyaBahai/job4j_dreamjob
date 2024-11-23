@@ -28,7 +28,7 @@ public class UserController  {
         var savedUser = userService.save(wowUser);
         if (savedUser.isEmpty()) {
             model.addAttribute("message", "Пользователь с такой почтой уже существует");
-            //  model.addAttribute("wowUser", new User());
+            //  model.addAttribute("wowUser", new User())
             return "errors/404";
         }
         return "redirect:/index";
