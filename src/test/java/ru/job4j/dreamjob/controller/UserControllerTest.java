@@ -75,7 +75,7 @@ class UserControllerTest {
     public void whenLoginNonExistingUserThenThenGetErrorPageWithMessage() {
         User user = new User(0, "Andrew", "wow@mail.ru", "wrongPassword");
         ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        when(userService.findByEmailAndPassword(user.getEmail(), user.getPassword()))
+        when(userService.findByEmailAndPassword(userCaptor.capture().getEmail(), userCaptor.capture().getPassword()))
                 .thenReturn(Optional.empty());
         HttpServletRequest request = mock(HttpServletRequest.class);
         Model model = new ConcurrentModel();
