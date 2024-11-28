@@ -59,13 +59,19 @@ class UserControllerTest {
     @Test
     public void whenLoginExistingUserThenLoggedIn() {
         User user = new User(0, "Andrew", "wow@mail.ru", "wow");
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        when(userService.findByEmailAndPassword(user.getEmail(), user.getPassword())).thenReturn(Optional.of(user));
-
+        var emailCaptor = ArgumentCaptor.forClass(String.class);
+        var passwordCaptor = ArgumentCaptor.forClass(String.class);
+        when(userService.findByEmailAndPassword(emailCaptor.capture(), passwordCaptor.capture()))
+                .thenReturn(Optional.of(user));
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getSession()).thenReturn(new MockHttpSession());
         Model model = new ConcurrentModel();
         String view = userController.loginUser(user, model, request);
+
+        String email = emailCaptor.getValue();
+        String password = passwordCaptor.getValue();
+        System.out.println(email);
+        System.out.println(password);
 
         assertThat(view).isEqualTo("redirect:/vacancies");
         assertThat(request.getSession().getAttribute("wowUser")).isEqualTo(user);
@@ -74,8 +80,9 @@ class UserControllerTest {
     @Test
     public void whenLoginNonExistingUserThenThenGetErrorPageWithMessage() {
         User user = new User(0, "Andrew", "wow@mail.ru", "wrongPassword");
-        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
-        when(userService.findByEmailAndPassword(userCaptor.capture().getEmail(), userCaptor.capture().getPassword()))
+        var emailCaptor = ArgumentCaptor.forClass(String.class);
+        var passwordCaptor = ArgumentCaptor.forClass(String.class);
+        when(userService.findByEmailAndPassword(emailCaptor.capture(), passwordCaptor.capture()))
                 .thenReturn(Optional.empty());
         HttpServletRequest request = mock(HttpServletRequest.class);
         Model model = new ConcurrentModel();
