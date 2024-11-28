@@ -68,11 +68,6 @@ class UserControllerTest {
         Model model = new ConcurrentModel();
         String view = userController.loginUser(user, model, request);
 
-        String email = emailCaptor.getValue();
-        String password = passwordCaptor.getValue();
-        System.out.println(email);
-        System.out.println(password);
-
         assertThat(view).isEqualTo("redirect:/vacancies");
         assertThat(request.getSession().getAttribute("wowUser")).isEqualTo(user);
     }
