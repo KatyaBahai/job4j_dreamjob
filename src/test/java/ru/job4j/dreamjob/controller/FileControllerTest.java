@@ -18,9 +18,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class FileControllerTest {
-    private final FileService fileService = mock(FileService.class);
-    private final FileController fileController = new FileController(fileService);
-    private final MultipartFile testFile = new MockMultipartFile("testFile.img", new byte[]{1, 2, 3});
+    private FileController fileController;
+    private FileService fileService;
+    private MultipartFile testFile;
+
+    @BeforeEach
+    public void initServices() {
+        fileService = mock(FileService.class);
+        fileController = new FileController(fileService);
+        testFile = new MockMultipartFile("testFile.img", new byte[]{1, 2, 3});
+    }
 
     @Test
     public void whenGetFileByIdThenFound() throws IOException {
